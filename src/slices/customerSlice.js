@@ -2,15 +2,21 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import customerService from '../services/customerService';
 
 const initialState = {
-    customerList: [],
+    customerList: JSON.parse(localStorage?.getItem("customers")) || [],
 }
 
 export const fetchCustomerList = createAsyncThunk(
     "customer/fetchCustomerList",
-    async (data, { rejectWithValue }) => {
+    async (data, { rejectWithValue, getState }) => {
         try {
-            const res = await customerService.getCustomerList();
-            return res.data.data;
+            const customers = getState().customer.customerList || [];
+            if(customers.length > 0){
+                return customers
+            }
+            else{
+                const res = await customerService.getCustomerList();
+                return res.data.data;
+            }
         } catch (error) {
             // console.log(error);
             return rejectWithValue(error);
@@ -22,9 +28,10 @@ const customerSlice  = createSlice({
     initialState,
     name: "customer",
     reducers: {
-        addCustomerReducer: (state, action) => {},
-        deleteCustomerReducer: (state, action) => {},
-        updateCustomerReducer: (state, action) => {},
+        updateCustomerList: (state, action) => {
+            state.customerList = action.payload;
+            localStorage.setItem("customers", JSON.stringify(action.payload));
+        },
     },
     extraReducers: (builder) => {
         builder.
@@ -35,5 +42,5 @@ const customerSlice  = createSlice({
 });
 
 
-export const { addCustomerReducer, deleteCustomerReducer, updateCustomerReducer } = customerSlice.actions;
+export const { updateCustomerList } = customerSlice.actions;
 export default customerSlice.reducer;

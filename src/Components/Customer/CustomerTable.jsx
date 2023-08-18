@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import CustomerRow from "./CustomerRow";
 
 
-const CustomerTable = () => {
+const CustomerTable = ({ handleDelete, handleEdit }) => {
     const customerList = useSelector(state => state.customer.customerList);
   return (
     <div className="customer-table hidden lg:block">
@@ -13,7 +13,7 @@ const CustomerTable = () => {
           <div className="">Email</div>
           <div className=""></div>
         </div>
-        {customerList?.map(customer => <CustomerRow key={customer.id} id={customer.id} imageUrl={customer.avatar} email={customer.email} name={customer.first_name + " " + customer.last_name} />)}
+        {customerList?.map(customer => <CustomerRow key={customer.id} handleDelete={handleDelete} handleEdit={handleEdit} id={customer.id} imageUrl={customer.avatar} email={customer.email} name={customer.first_name + " " + customer.last_name} />)}
     </div>
   )
 }
