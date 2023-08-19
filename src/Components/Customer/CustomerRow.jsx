@@ -3,8 +3,8 @@ import { convertIdToThreeDigits } from "../../utils/utils";
 const CustomerRow = ({ imageUrl, id, name, email, handleDelete, handleEdit }) => {
     return(
         <div className="bg-white w-full py-2 grid grid-cols-5 justify-center items-center mt-4 rounded-lg">
-          <div className="ml-2">
-            <img src={imageUrl} alt="" width={70} className="rounded-lg" />
+          <div className="ml-2 h-[70px] overflow-hidden flex items-center">
+            <img src={imageUrl} alt="" width={70} height={70} className="rounded-lg" />
           </div>
           <div className="">{convertIdToThreeDigits(id.toString())}</div>
           <div className="truncate">{name}</div>

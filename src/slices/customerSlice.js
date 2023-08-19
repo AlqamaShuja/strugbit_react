@@ -18,7 +18,6 @@ export const fetchCustomerList = createAsyncThunk(
                 return res.data.data;
             }
         } catch (error) {
-            // console.log(error);
             return rejectWithValue(error);
         }
     }

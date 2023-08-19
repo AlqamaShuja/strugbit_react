@@ -22,15 +22,25 @@ const AddCustomerModal = ({ closeModal, isNew=true, customer={} }) => {
 
   const handleAddNewCustomer = () => {
     if(isNew){
-      console.log(selectedImage, "selected22");
-      if(!selectedImage){
+      const image = localStorage.getItem("uploadedImage");
+      if(!image){
         toastMessage("Please select image", "error");
         return;
       }
+      if(!nameRef.current.value){
+        toastMessage("Please enter full name", "error");
+        return;
+      }
+      if(!emailRef.current.value){
+        toastMessage("Please enter your email", "error");
+        return;
+      }
+      const name = nameRef.current.value.split(" ");
       const data = {
-        name: nameRef.current.value,
+        first_name: name.shift(),
+        last_name: name.join(" "),
         email: emailRef.current.value,
-        avatar: selectedImage
+        avatar: image
       }
       
       const customers = [...customerList]; 
@@ -39,6 +49,7 @@ const AddCustomerModal = ({ closeModal, isNew=true, customer={} }) => {
       dispatch(updateCustomerList(customers));
       nameRef.current.value = '';
       emailRef.current.value = '';
+      localStorage.removeItem("uploadedImage");
       setSelectedImage(null);
       closeModal()
     }
@@ -68,6 +79,7 @@ const AddCustomerModal = ({ closeModal, isNew=true, customer={} }) => {
       reader.onload = (e) => {
         const base64Image = e.target.result;
         setSelectedImage(base64Image);
+        localStorage.setItem('uploadedImage', base64Image);
       };
       reader.readAsDataURL(file);
     }
