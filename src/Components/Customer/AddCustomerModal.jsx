@@ -47,6 +47,7 @@ const AddCustomerModal = ({ closeModal, isNew=true, customer={} }) => {
       customers.push({ ...data, id: customers[customers.length-1].id + 1 });
   
       dispatch(updateCustomerList(customers));
+      toastMessage("New Customer Added", "success");
     }
     else {
       const name = nameRef.current.value.split(" ");
@@ -63,6 +64,7 @@ const AddCustomerModal = ({ closeModal, isNew=true, customer={} }) => {
       });
 
       dispatch(updateCustomerList(updatedCustomer));
+      toastMessage("Customer Updated", "success");
     }
 
     nameRef.current.value = '';
