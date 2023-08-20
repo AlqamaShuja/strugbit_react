@@ -47,29 +47,29 @@ const AddCustomerModal = ({ closeModal, isNew=true, customer={} }) => {
       customers.push({ ...data, id: customers[customers.length-1].id + 1 });
   
       dispatch(updateCustomerList(customers));
-      nameRef.current.value = '';
-      emailRef.current.value = '';
-      localStorage.removeItem("uploadedImage");
-      setSelectedImage(null);
-      closeModal()
     }
     else {
+      const name = nameRef.current.value.split(" ");
+      const image = localStorage.getItem("uploadedImage");
       const data = {
-        name: nameRef.current.value,
+        first_name: name.shift(),
+        last_name: name.join(" "),
         email: emailRef.current.value,
-        avatar: selectedImage ? selectedImage : customer.avatar
+        avatar: image ? image : customer.avatar
       }
       const updatedCustomer = customerList.map(cus => {
-        if(cus.id === customer.id) return { data, id: customer.id }
+        if(cus.id === customer.id) return { ...data, id: customer.id }
         else return cus;
       });
 
       dispatch(updateCustomerList(updatedCustomer));
-      nameRef.current.value = '';
-      emailRef.current.value = '';
-      setSelectedImage(null);
-      closeModal()
     }
+
+    nameRef.current.value = '';
+    emailRef.current.value = '';
+    localStorage.removeItem("uploadedImage");
+    setSelectedImage(null);
+    closeModal()
   }
 
   const handleImageUpload = (event) => {
